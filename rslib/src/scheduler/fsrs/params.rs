@@ -327,6 +327,15 @@ pub(crate) fn reviews_for_fsrs(
         if idx > 0 {
             entries.drain(..idx);
         }
+        for (index, entry) in entries.iter().enumerate() {
+            if index == 0 {
+                continue;
+            }
+            if entry.id.0 - entries[index - 1].id.0 >= 2*60*60*1000 {
+                entries.drain(..index);
+                break;
+            }
+        }
     } else if training {
         // when training, we ignore cards that don't have any learning steps
         return None;
